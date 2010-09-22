@@ -1,0 +1,57 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:view='urn:import:org.ow2.proactive_grid_cloud_portal.client.view'>
+
+
+
+	<ui:style field="common" src="Common.css"></ui:style>
+	<ui:style src="ResourceManagerView.css"></ui:style>
+	<ui:style field='otherStyle'>
+		.pretty {
+			background-color: Skyblue;
+			color: Black;
+			font-size: 1em;
+			font-weight: bold;
+		}
+	</ui:style>
+
+
+	<g:FlowPanel>
+		<g:VerticalPanel styleName="{common.titlePanel}">
+			<!-- <g:VerticalPanel styleName="{otherStyle.pretty}"> -->
+			<g:HTML styleName="{common.title}">ProActive Resource Manager</g:HTML>
+			<g:HorizontalPanel styleName="{common.statusMessagePanel}">
+				<g:cell verticalAlignment="ALIGN_MIDDLE ">
+					<g:HorizontalPanel styleName="{common.connectionStatusPanel}">
+						<g:cell verticalAlignment="ALIGN_MIDDLE ">
+							<g:Label ui:field="userName"></g:Label>
+						</g:cell>
+					</g:HorizontalPanel>
+				</g:cell>
+				<g:cell verticalAlignment="ALIGN_MIDDLE ">
+					<g:HorizontalPanel styleName="{common.statusActionPanel}">
+						<g:cell verticalAlignment="ALIGN_MIDDLE ">
+							<g:Button ui:field="disconnectButton" styleName="{common.connectButton}">Disconnect</g:Button>
+						</g:cell>
+					</g:HorizontalPanel>
+				</g:cell>
+
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+		<g:SplitLayoutPanel styleName="{style.splitLayout}">
+<g:south size="300">
+
+				<view:StateView ui:field="stateView" styleName="{style.contentPage}"></view:StateView>
+
+</g:south>
+<!--			<g:center>-->
+<!--			-->
+<!--				<view:StateView ui:field="stateView" styleName="{style.contentPage}"></view:StateView>-->
+<!---->
+<!--			</g:center>-->
+
+
+		</g:SplitLayoutPanel>
+
+	</g:FlowPanel>
+</ui:UiBinder>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>ResourceManagerServiceImpl</servlet-name>
+		<servlet-class>org.ow2.proactive_grid_cloud_portal.server.ResourceManagerServiceImpl</servlet-class>
+	</servlet>
+
+
+	<!--servlet definition added for com.google.gwt.gen2.logging.server.RemoteLoggingService-->
+	<servlet>
+		<servlet-name>remoteLoggingService</servlet-name>
+		<servlet-class>com.google.gwt.gen2.logging.server.RemoteLoggingService</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ResourceManagerServiceImpl</servlet-name>
+		<url-pattern>/proactivegridcloudportal/scheduler</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>remoteLoggingService</servlet-name>
+		<url-pattern>/proactivegridcloudportal/logging</url-pattern>
+	</servlet-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>ProActiveGridCloudPortal.html</welcome-file>
+	</welcome-file-list>
+
+</web-app>

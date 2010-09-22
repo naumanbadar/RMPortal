@@ -1,0 +1,63 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+<ui:style field="common" src="Common.css" ></ui:style>
+	<ui:style>
+    .textBoxStyle {
+      color: grey;
+      font-style: italic;
+    }
+    </ui:style>
+
+<g:FlowPanel>
+	<g:VerticalPanel styleName="{common.titlePanel}">
+		<g:HTML styleName="{common.title}">ProActive Resource Manager</g:HTML>		
+		<g:HorizontalPanel styleName="{common.statusMessagePanel}">
+			<g:cell verticalAlignment="ALIGN_MIDDLE ">
+				<g:HorizontalPanel styleName="{common.connectionStatusPanel}">
+					<g:cell verticalAlignment="ALIGN_MIDDLE ">
+						<g:Label ui:field="messageLabel">You are not connected.</g:Label>
+					</g:cell>
+				</g:HorizontalPanel>
+			</g:cell>
+			<g:cell verticalAlignment="ALIGN_MIDDLE ">
+				<g:HorizontalPanel styleName="{common.statusActionPanel}">
+					<g:cell verticalAlignment="ALIGN_MIDDLE ">						
+<!--				    	<g:TextBox ui:field="userTextBox" styleName="{style.textBoxStyle}" title="Username" text="Username"></g:TextBox>-->
+				    	<g:TextBox ui:field="userTextBox" styleName="{style.textBoxStyle}" title="Username" text="admin"></g:TextBox>
+				    </g:cell>
+				    <g:cell verticalAlignment="ALIGN_MIDDLE ">
+<!--				    	<g:PasswordTextBox ui:field="passwordTextBox" styleName="{style.textBoxStyle}" title="Password" text="Password"></g:PasswordTextBox>-->
+				    	<g:PasswordTextBox ui:field="passwordTextBox" styleName="{style.textBoxStyle}" title="Password" text="admin"></g:PasswordTextBox>
+				    </g:cell>
+				    <g:cell verticalAlignment="ALIGN_MIDDLE "> 
+						<g:Button ui:field="okButton" styleName="{common.connectButton}">Connect</g:Button>
+					</g:cell>			
+				</g:HorizontalPanel>
+			</g:cell>
+		</g:HorizontalPanel>
+	</g:VerticalPanel> 
+	
+<!--	<g:VerticalPanel styleName="{common.centerAlignPanel}">-->
+<!--			<g:HorizontalPanel>-->
+<!--				<g:Label>Connect to scheduler</g:Label>-->
+<!--			</g:HorizontalPanel>-->
+<!--			<g:HorizontalPanel>-->
+<!--				<g:Label ui:field="userLabel">User:</g:Label>-->
+<!--				<g:TextBox ui:field="userTextBox"></g:TextBox>-->
+<!--			</g:HorizontalPanel>-->
+<!--			<g:HorizontalPanel>-->
+<!--				<g:Label ui:field="passwordLabel">Password:</g:Label>-->
+<!--				<g:PasswordTextBox ui:field="passwordTextBox"></g:PasswordTextBox> -->
+<!--			</g:HorizontalPanel>-->
+<!--			<g:HorizontalPanel>-->
+<!--				<g:Button ui:field="okButton">OK</g:Button>-->
+<!--				<g:Button ui:field="cancelButton">Cancel</g:Button>-->
+<!--			</g:HorizontalPanel>-->
+<!--			<g:HorizontalPanel>-->
+<!--				<g:Label ui:field="errorLabel" addStyleNames="{style.errorLabel}"></g:Label>-->
+<!--			</g:HorizontalPanel>-->
+<!--	</g:VerticalPanel>-->
+</g:FlowPanel>	
+</ui:UiBinder> 

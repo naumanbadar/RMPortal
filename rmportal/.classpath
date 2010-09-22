@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" output="test-classes" path="test"/>
+	<classpathentry exported="true" kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="compile/lib/junit-4.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/jettison-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/gwt-incubator-20100204-r1747.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/jaxrs-api-2.0.0.GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/resteasy-jaxrs-2.0.0.GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/commons-collections-3.2.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/naumanbadar/Documents/eclipse/plugins/com.google.gwt.eclipse.sdkbundle.2.0.4_2.0.4.v201006301309/gwt-2.0.4/gwt-log-3.0.3.jar"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>

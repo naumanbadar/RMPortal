@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project basedir=".">
+	
+	<property environment="env" />
+
+	<property name="base.dir"			value=".." />
+	<property name="src.dir"			value="${base.dir}/src" />
+	<property name="war.dir"			value="${base.dir}/war" />
+	<property name="compile.dir"		value="${base.dir}/compile" />
+	<property name="dist.dir"		value="${base.dir}/dist" />
+
+	<property name="web-inf.dir"		value="${war.dir}/WEB-INF" />
+
+	<property name="classes.dir"		value="${web-inf.dir}/classes"/>
+	<property name="lib.dir"			value="${web-inf.dir}/lib"/>
+
+	<property name="package.name"		value="org.ow2.proactive_grid_cloud_portal" />
+
+	<property name="test.src.dir"		value="${base.dir}/test" />
+	<property name="test.classes.dir" 	value="${base.dir}/test-classes"/>
+	<property name="reports.dir" 		value="${base.dir}/junitReports" />
+	<property name="reports.dev.dir" 	value="${reports.dir}/dev" />
+	<property name="reports.prod.dir" 	value="${reports.dir}/prod" />
+
+	<path id="project.class.path">
+		<pathelement location="${classes.dir}"/>
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+		<fileset dir="${base.dir}/lib" includes="**/*.jar"/>
+	</path>
+
+	<path id="compile.class.path">
+		<fileset dir="${compile.dir}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+</project>
