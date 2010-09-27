@@ -44,6 +44,28 @@ public class StatePresenterImpl implements StatePresenter {
 		this.display.getPanel().add(display.getTable());
 		retrieveSate();
 		
+		RefreshTimer timer = new RefreshTimer() {
+			
+			@Override
+			public void exec() {
+				rpcService.getResourceManagerStateFromRestService(sessionId, new AsyncCallback<ResourceManagerState>() {
+					
+					@Override
+					public void onSuccess(ResourceManagerState result) {
+						display.setState(result);
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						display.setEmptyMessage("Can't retrieve state");
+						cancel();
+					}
+				});
+				
+			}
+		};
+		timer.scheduleRepeating(1000);
 		
 	}
 
@@ -81,5 +103,6 @@ public class StatePresenterImpl implements StatePresenter {
 		});
 
 	}
+	
 
 }
