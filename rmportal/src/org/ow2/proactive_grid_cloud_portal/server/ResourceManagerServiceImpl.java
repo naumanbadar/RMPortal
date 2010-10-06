@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.ws.rs.core.Response.Status;
 
+import net.sourceforge.htmlunit.corejs.javascript.ast.ForInLoop;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -20,6 +22,9 @@ import org.ow2.proactive_grid_cloud_portal.shared.exception.LoginException;
 import org.ow2.proactive_grid_cloud_portal.shared.exception.LogoutException;
 import org.ow2.proactive_grid_cloud_portal.shared.exception.ServiceCreationException;
 import org.ow2.proactive_grid_cloud_portal.shared.property.Properties;
+import org.ow2.proactive_grid_cloud_portal.shared.state.MonitoredEvents;
+import org.ow2.proactive_grid_cloud_portal.shared.state.NodeEvents;
+import org.ow2.proactive_grid_cloud_portal.shared.state.NodeSource;
 import org.ow2.proactive_grid_cloud_portal.shared.state.ResourceManagerState;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -66,7 +71,6 @@ public class ResourceManagerServiceImpl extends RemoteServiceServlet implements 
 		User user = new User("admin", "admin");
 		this.client = ProxyFactory.create(RestClient.class, Properties.REST_URL.getValueAsString());
 
-
 	}
 
 	/**
@@ -98,7 +102,8 @@ public class ResourceManagerServiceImpl extends RemoteServiceServlet implements 
 					// if
 					// (Properties.SERVER_JOBS_SYNCHRONIZATION.getValueAsBoolean())
 					// {
-					// ResourceManagerServiceImpl.updates.put(response, new JobBagImpl());
+					// ResourceManagerServiceImpl.updates.put(response, new
+					// JobBagImpl());
 					// }
 					break;
 				default:
@@ -126,7 +131,6 @@ public class ResourceManagerServiceImpl extends RemoteServiceServlet implements 
 		ResourceManagerServiceImpl.users.remove(sessionId);
 
 	}
-
 
 	/**
 	 * The method used for returning the InputStream given in a String form.
@@ -166,51 +170,10 @@ public class ResourceManagerServiceImpl extends RemoteServiceServlet implements 
 		return ResourceManagerServiceImpl.users.get(sessionId);
 	}
 
-
-	
-	public String getRmStateFromRestService_Prototype(String sessionId) {
-		Log.info("retriving state as string with id: "+sessionId);
-		synchronized (client) {
-			ClientResponse<InputStream> clientResponse = client.state(sessionId);
-			Status status = clientResponse.getResponseStatus();
-			InputStream response = clientResponse.getEntity();
-
-			try {
-				switch (status) {
-					case OK:
-						if (response != null){
-							String resReturned = convertToString(response);
-							return resReturned;
-//							Log.info(convertToString(response));
-						}
-						break;
-					default:
-						Log.info("Status NOT OK");
-						return "RestClient misbehaved";
-				}
-
-	        } catch (Exception e) {
-	        	Log.debug(e.getMessage());
-	        } 
-//	        	finally {
-//	        	clientResponse.releaseConnection();
-//		        if (response != null) {
-//				try {
-//					response.close();
-//				} catch (IOException e) {
-//					throw new GettingJobException();
-//				}
-//		        }
-//	        }
-		}
-//		return jobBag;
-		return "RestClient misbehaved";
-	}
-	
 	public ResourceManagerState getResourceManagerStateFromRestService(String sessionId) throws Exception {
-		Log.info("retriving state as jsonObject with id: "+sessionId);
+		Log.info("retriving state as jsonObject with id: " + sessionId);
 		ResourceManagerState state = null;
-		
+
 		synchronized (client) {
 			ClientResponse<InputStream> clientResponse = client.state(sessionId);
 			Status status = clientResponse.getResponseStatus();
@@ -218,37 +181,37 @@ public class ResourceManagerServiceImpl extends RemoteServiceServlet implements 
 
 			try {
 				switch (status) {
-					case OK:
-						if (response != null){
-							state = parseState(convertToString(response));
-						}
-						break;
-					default:
-						throw new Exception("Cant get state from rest");
-						///TODO: create appropriate exception
+				case OK:
+					if (response != null) {
+						state = parseState(convertToString(response));
+					}
+					break;
+				default:
+					throw new Exception("Cant get state from rest");
+					// /TODO: create appropriate exception
 				}
 
-	        } catch (Exception e) {
-//	        	throw new GettingJobException();
-	        	Log.info(e.getMessage());
-	        } finally {
-	        	clientResponse.releaseConnection();
-		        if (response != null) {
-				try {
-					response.close();
-				} catch (IOException e) {
-//					throw new GettingJobException();
+			} catch (Exception e) {
+				// throw new GettingJobException();
+				Log.info(e.getMessage());
+			} finally {
+				clientResponse.releaseConnection();
+				if (response != null) {
+					try {
+						response.close();
+					} catch (IOException e) {
+						// throw new GettingJobException();
+					}
 				}
-		        }
-	        }
+			}
 		}
 		return state;
 	}
 
 	private ResourceManagerState parseState(String jsonString) throws JSONException {
-		
+
 		JSONObject jsonStateObject = new JSONObject(jsonString);
-		
+
 		JSONObject numberofAllResourcesObject = jsonStateObject.getJSONObject("numberOfAllResources");
 		JSONObject numberOfFreeResourcesObject = jsonStateObject.getJSONObject("numberOfFreeResources");
 		int numberofAllResources = numberofAllResourcesObject.getInt("value");
@@ -256,9 +219,57 @@ public class ResourceManagerServiceImpl extends RemoteServiceServlet implements 
 		int freeNodesNumber = jsonStateObject.getInt("freeNodesNumber");
 		int totalAliveNodesNumber = jsonStateObject.getInt("totalAliveNodesNumber");
 		int totalNodesNumber = jsonStateObject.getInt("totalNodesNumber");
-		
+
 		return new ResourceManagerState(numberofAllResources, numberOfFreeResources, freeNodesNumber, totalAliveNodesNumber, totalNodesNumber);
 	}
 
+	private MonitoredEvents getMonitoredEventsFromJson(String jsonString) throws JSONException {
+
+		JSONObject jsonMonitoredEventsObject = new JSONObject(jsonString);
+		JSONArray jsonNodeEventsArray = jsonMonitoredEventsObject.getJSONArray("nodesEvents");
+		JSONArray jsonNodeSourceArray = jsonMonitoredEventsObject.getJSONArray("nodeSource");
+		
+		MonitoredEvents monitoredEvents= new MonitoredEvents(); 
+		
+		for (int i = 0; i < jsonNodeEventsArray.length(); i++) {
+			NodeEvents nodeEvent = parseNodeEvents(jsonNodeEventsArray.getJSONObject(i));
+			monitoredEvents.getNodeEvents().add(nodeEvent);
+		}
+		
+		return monitoredEvents;
+	}
+	public static NodeEvents parseNodeEvents(JSONObject jsonNodeEvents) throws JSONException {
+
+		String hostName = jsonNodeEvents.getString("hostName");
+		String nodeSource = jsonNodeEvents.getString("nodeSource");
+		String nodeUrl = jsonNodeEvents.getString("nodeUrl");
+		String padname = jsonNodeEvents.getString("padname");
+		String vnName = jsonNodeEvents.getString("vnName");
+		String vmname = jsonNodeEvents.getString("vmname");
+		String nodeState = jsonNodeEvents.getString("nodeState");
+		String previousNodeState = jsonNodeEvents.getString("previousNodeState");
+		String nodeProvider = jsonNodeEvents.getString("nodeProvider");
+		String nodeOwner = jsonNodeEvents.getString("nodeOwner");
+		String timeStamp = jsonNodeEvents.getString("timeStamp");
+		String eventType = jsonNodeEvents.getString("eventType");
+		String rmurl = jsonNodeEvents.getString("rmurl");
+		String timeStampFormatted = jsonNodeEvents.getString("timeStampFormatted");
+
+		return new NodeEvents(hostName, nodeSource, nodeUrl, padname, vnName, vmname, nodeState, previousNodeState, nodeProvider, nodeOwner, timeStamp, eventType, rmurl, timeStampFormatted);
+	}
+
+	public static NodeSource parseNodeSource(JSONObject jsonNodeEvents) throws JSONException {
+
+		String sourceName = jsonNodeEvents.getString("sourceName");
+		String sourceDescription = jsonNodeEvents.getString("sourceDescription");
+		String nodeSourceProvider = jsonNodeEvents.getString("nodeSourceProvider");
+		String timeStamp = jsonNodeEvents.getString("timeStamp");
+		String eventType = jsonNodeEvents.getString("eventType");
+		String rmurl = jsonNodeEvents.getString("rmurl");
+		String timeStampFormatted = jsonNodeEvents.getString("timeStampFormatted");
+
+		return new NodeSource(sourceName, sourceDescription, nodeSourceProvider, timeStamp, eventType, rmurl, timeStampFormatted);
+
+	}
 
 }

@@ -57,4 +57,10 @@ public interface RestClient {
     @Path("/rm/state")
     @Produces("application/json")
     public  ClientResponse<InputStream> state(@HeaderParam("sessionid") String sessionId);
+	
+	
+	@GET
+	@Path("/rm/monitoring")
+	public ClientResponse<InputStream> monitor(@HeaderParam("sessionid") String sessionId);
+	
 }

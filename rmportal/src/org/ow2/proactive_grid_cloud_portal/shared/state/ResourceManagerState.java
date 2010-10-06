@@ -10,11 +10,11 @@ import java.io.Serializable;
  *
  */
 public class ResourceManagerState implements Serializable {
-	int numberOfAllResources;
-	int numberOfFreeResources;
-	int freeNodesNumber;
-	int totalAliveNodesNumber;
-	int totalNodesNumber;
+	private int numberOfAllResources;
+	private int numberOfFreeResources;
+	private int freeNodesNumber;
+	private int totalAliveNodesNumber;
+	private int totalNodesNumber;
 	
 	public ResourceManagerState() {
 
